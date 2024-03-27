@@ -23,6 +23,70 @@ class _HomePageState extends State<HomePage> {
   List<Todo> myTodos = [];
   bool isLoading = true;
 
+  void _showModal() {
+    showModalBottomSheet(
+            context: context, 
+            builder: (BuildContext context) { //context is variable which stores information of current state
+              return Container(
+                height: MediaQuery.of(context).size.height / 2,
+                color: Colors.grey,
+                child: const Center(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Text(
+                          "Add new Item",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: TextField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "Title",
+                          )
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: TextField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "Description",
+                          )
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: null,
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            "Add",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                            )
+                          ),
+                        )
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+  }
+
   void fetchData() async {
     try{
       http.Response response = await http.get(Uri.parse(api));
@@ -55,6 +119,7 @@ class _HomePageState extends State<HomePage> {
   // ignore: non_constant_identifier_names
   void delete_todo(String id) async {
     try{
+      // ignore: unused_local_variable
       http.Response response = await http.delete(Uri.parse("$api/$id")); //same as Uri.parse(api + "/" + id)
       fetchData();
       setState(() {});
@@ -98,7 +163,13 @@ class _HomePageState extends State<HomePage> {
             )
           ]
         ),
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showModal();
+        },
+        child: const Icon(Icons.add)
+      ),
     );
   }
 }
