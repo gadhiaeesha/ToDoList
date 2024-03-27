@@ -7,6 +7,7 @@ import 'package:frontend/Widgets/todo_container.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:frontend/Widgets/app_bar.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,6 +18,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int done = 0;
+  
   List<Todo> myTodos = [];
   bool isLoading = true;
 
@@ -33,6 +36,9 @@ class _HomePageState extends State<HomePage> {
           date: todo['date'],
         );
 
+        if(todo['isDone']){
+          done += 1;
+        }
         myTodos.add(t);
       });
 
@@ -57,16 +63,29 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: const Color(0xFF001133),
       appBar: customAppBar(),
-      body: isLoading ? const CircularProgressIndicator() : 
-      ListView(
-        children: myTodos.map((e) {
-          return TodoContainer(
-            id: e.id, 
-            title: e.title, 
-            desc: e.desc, 
-            isDone: e.isDone,
-          );
-        }).toList(),
-      ));
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            PieChart(
+              dataMap: {
+                "Done": done.toDouble(),
+                "Incomplete": (myTodos.length - done).toDouble(),
+              }
+            ),
+            isLoading ? const CircularProgressIndicator() : 
+            Column(
+              children: myTodos.map((e) {
+                return TodoContainer(
+                  id: e.id, 
+                  title: e.title, 
+                  desc: e.desc, 
+                  isDone: e.isDone,
+                );
+              }).toList(),
+            )
+          ]
+        ),
+      )
+    );
   }
 }
