@@ -56,11 +56,13 @@ class _HomePageState extends State<HomePage> {
   void delete_todo(String id) async {
     try{
       http.Response response = await http.delete(Uri.parse("$api/$id")); //same as Uri.parse(api + "/" + id)
+      setState(() { //calls the build method [line 74] again
+        myTodos = [];
+      }); 
       fetchData();
-      setState(() {});
     }
     catch(e) {
-      print("Error is $e");
+      print(e);
     }
   }
 
