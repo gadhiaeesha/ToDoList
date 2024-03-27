@@ -52,6 +52,18 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  // ignore: non_constant_identifier_names
+  void delete_todo(String id) async {
+    try{
+      http.Response response = await http.delete(Uri.parse("$api/$id")); //same as Uri.parse(api + "/" + id)
+      fetchData();
+      setState(() {});
+    }
+    catch(e) {
+      print("Error is $e");
+    }
+  }
+
   @override
   void initState() {
     fetchData();
@@ -76,6 +88,7 @@ class _HomePageState extends State<HomePage> {
             Column(
               children: myTodos.map((e) {
                 return TodoContainer(
+                  onPress: () => delete_todo(e.id.toString()),
                   id: e.id, 
                   title: e.title, 
                   desc: e.desc, 

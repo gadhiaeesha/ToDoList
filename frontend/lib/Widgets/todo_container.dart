@@ -5,12 +5,14 @@ class TodoContainer extends StatelessWidget {
   final String title;
   final String desc;
   final bool isDone;
+  final Function onPress;
   
   const TodoContainer({Key? key, 
   required this.id, 
   required this.title, 
   required this.desc, 
-  required this.isDone
+  required this.isDone,
+  required this.onPress,
   }) : super(key: key);
 
   @override
@@ -42,10 +44,12 @@ class TodoContainer extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-                  const IconButton(
-                    onPressed: null, 
-                    icon: Icon(Icons.delete, 
-                    color: Colors.white), 
+                  IconButton(
+                    onPressed: () => onPress(), 
+                    icon: const Icon(
+                      Icons.delete, 
+                      color: Colors.white
+                    ), 
                   )
                 ]
               ),
