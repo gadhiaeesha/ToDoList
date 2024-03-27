@@ -55,9 +55,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF001133),
+      backgroundColor: const Color(0xFF001133),
       appBar: customAppBar(),
-      body: isLoading ? CircularProgressIndicator() : 
+      body: isLoading ? const CircularProgressIndicator() : 
       ListView(
         children: myTodos.map((e) {
           return TodoContainer(
